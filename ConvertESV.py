@@ -2,6 +2,9 @@
 import sqlite3
 from argparse import ArgumentParser
 import os
+import json
+
+from reformedcatutils.biblebooks import idx2books, books2idx, numchaps
 
 from holyutil.converthelper import BaseSQLiteToJSONConverter
 
@@ -25,4 +28,11 @@ if __name__ == '__main__':
 
     dbconn = sqlite3.connect(dbpath)
     converter = BaseSQLiteToJSONConverter(dbconn)
-
+    outputfile = open(jsonpath, 'w')
+    for book in books2idx.keys():
+        for chapter in range(1, numchaps[book]+1):
+            maxverse = converter.find_number_of_verses(book, chapter)
+            for verse in range(1, maxverse+1):
+                bibversedict = converter.convert(book, chapter, verse)
+                outputfile.write(json.dumps(bibversedict)+'\n')
+    outputfile.close()

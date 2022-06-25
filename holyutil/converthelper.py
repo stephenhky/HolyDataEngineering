@@ -9,6 +9,11 @@ class BaseSQLiteToJSONConverter:
         self.dbconn = dbconn
         self.cursor = self.dbconn.cursor()
 
+    def find_number_of_verses(self, book, chapter):
+        query = 'select max(verse) from Bible where book={} and chapter={}'.format(books2idx[book], chapter)
+        maxverse = max([item for item in self.cursor.execute(query)])
+        return maxverse
+
     def convert(self, book, chapter, verse, preprocess=lambda x: x):
         bookidx = books2idx[book]
         query = 'select Scripture from Bible where book={} and chapter={} and verse={}'.format(bookidx, chapter, verse)
