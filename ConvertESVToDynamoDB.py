@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from reformedcatutils.biblebooks import idx2books, books2idx, numchaps
 import boto3
+from tqdm import tqdm
 
 from holyutil.converthelper import BaseSQLiteToJSONConverter
 
@@ -38,11 +39,11 @@ if __name__ == '__main__':
 
     dbconn = sqlite3.connect(dbpath)
     converter = BaseSQLiteToJSONConverter(dbconn)
-    for book in books2idx.keys():
+    for book in tqdm(books2idx.keys()):
         for chapter in range(1, numchaps[book]+1):
             maxverse = converter.find_number_of_verses(book, chapter)
             for verse in range(1, maxverse+1):
                 bibversedict = converter.convert(book, chapter, verse)
                 bibversedict['bibid'] = '{}-{}-{}'.format(book, chapter, verse)
 
-                table.put_item(bibversedict)
+                table.put_item(Item=bibversedict)

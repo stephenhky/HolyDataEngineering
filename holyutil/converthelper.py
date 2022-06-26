@@ -18,7 +18,7 @@ class BaseSQLiteToJSONConverter:
         bookidx = books2idx[book]
         query = 'select Scripture from Bible where book={} and chapter={} and verse={}'.format(bookidx, chapter, verse)
         iterator = self.cursor.execute(query)
-        texts = [text for text in iterator]
+        texts = [text[0] for text in iterator]
         if len(texts) == 0:
             return {}
         elif len(texts) == 1:
