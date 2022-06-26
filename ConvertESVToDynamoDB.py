@@ -45,4 +45,4 @@ if __name__ == '__main__':
                 bibversedict = converter.convert(book, chapter, verse)
                 bibversedict['bibid'] = '{}-{}-{}'.format(book, chapter, verse)
 
-
+                table.put_item(bibversedict)
