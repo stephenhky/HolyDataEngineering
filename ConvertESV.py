@@ -3,11 +3,10 @@ import sqlite3
 from argparse import ArgumentParser
 import os
 import json
-import re
 
 from reformedcatutils.biblebooks import books2idx, numchaps
 
-from holyutil.converthelper import BaseSQLiteToJSONConverter
+from holyutil.converthelper import BaseSQLiteToJSONConverter, esv_preprocess_text
 
 
 def get_argparser():
@@ -34,6 +33,6 @@ if __name__ == '__main__':
         for chapter in range(1, numchaps[book]+1):
             maxverse = converter.find_number_of_verses(book, chapter)
             for verse in range(1, maxverse+1):
-                bibversedict = converter.convert(book, chapter, verse, preprocess=lambda x: re.sub(r'\<.+>', '', x))
+                bibversedict = converter.convert(book, chapter, verse, preprocess=esv_preprocess_text)
                 outputfile.write(json.dumps(bibversedict)+'\n')
     outputfile.close()

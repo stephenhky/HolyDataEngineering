@@ -1,5 +1,6 @@
 
 import warnings
+import re
 
 from reformedcatutils.biblebooks import books2idx, idx2books
 
@@ -38,3 +39,9 @@ class BaseSQLiteToJSONConverter:
             }
 
 
+def esv_preprocess_text(s):
+    to_removes = [r'\<[Ff][RrIi]>', r'\<Blue>.+\</Blue>']
+    for to_remove in to_removes:
+        s = re.sub(to_remove, '', s)
+    s = re.sub(r'\s+', ' ', s)
+    return s
