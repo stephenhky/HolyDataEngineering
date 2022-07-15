@@ -29,11 +29,11 @@ if __name__ == '__main__':
 
     dbconn = sqlite3.connect(dbpath)
     converter = BaseSQLiteToJSONConverter(dbconn)
-    versedict = defaultdict(lambda : {})
+    versedict = defaultdict(lambda : [])
     for book in books2idx.keys():
         for chapter in range(1, numchaps[book]+1):
             maxverse = converter.find_number_of_verses(book, chapter)
-            versedict[book][chapter] = maxverse
+            versedict[book].append(maxverse)
     versedict = dict(versedict)
 
     json.dump(versedict, open(args.output_json, 'w'))
