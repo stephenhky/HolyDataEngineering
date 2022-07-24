@@ -45,3 +45,7 @@ def esv_preprocess_text(s):
         s = re.sub(to_remove, '', s)
     s = re.sub(r'\s+', ' ', s)
     return s
+
+
+def unchange_text(s):
+    return s
